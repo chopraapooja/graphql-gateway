@@ -1,0 +1,3993 @@
+const {gql} = require('graphql');
+
+const typeDefs = gql`
+type AdvisoriesRedhatId {
+  """The content type of advisory.  i.e. for CONTAINER or RPM."""
+  contentType: ContentType!
+
+  """Date the record was created. Value always generated on inset."""
+  creationDate: String
+
+  """Array of CVEs fixed by this advisory."""
+  cves: [CvesListItem]
+
+  """Description of the advisory."""
+  description: String
+
+  """The id of advisory."""
+  id: String
+
+  """Array of issues fixed by this advisory."""
+  issues: [IssuesListItem]
+
+  """Date the record was last updated. Value always generated on update."""
+  lastUpdateDate: String
+  objectType: String
+
+  """Severity of the advisory."""
+  severity: String
+
+  """The date the image advisory shipped."""
+  shipDate: String
+
+  """The solution of the advisory."""
+  solution: String
+
+  """Short summary of the advisory. TODO set realistic limit."""
+  synopsis: String!
+
+  """Topic of the advisory."""
+  topic: String
+
+  """The type of advisory. i.e. for RHSA:2016-1001 the type is 'RHSA'."""
+  type: Type!
+}
+
+type Advisory {
+  """URI to the advisory for the CVE."""
+  href: String
+}
+
+type AdvisoryRpmMappingListItem {
+  """Content advisory ID."""
+  advisoryIds: [String]
+
+  """NVRA of the RPM related to advisories."""
+  nvra: String
+}
+
+"""Object for all brew related fields."""
+type Brew {
+  """Unique immutable build identifier in the brew build system."""
+  build: String
+
+  """Timestamp from Brew when the image has been succesfully built."""
+  completionDate: String
+
+  """Field for multiarch primary key."""
+  nvra: String
+
+  """A package name in our brew build system."""
+  package: String
+}
+
+type ByCustomersListItem {
+  """Country that the customer is from."""
+  country: String!
+
+  """Name of the customer."""
+  customerName: String!
+
+  """Date of the image pull."""
+  downloadDate: String!
+
+  """Number of image pulls associated with the customer."""
+  pullCount: Int!
+}
+
+type ByDateListItem {
+  """Date of the page view."""
+  activityDate: String!
+
+  """Number of page views."""
+  pageviews: Int!
+}
+
+type ByTagsListItem {
+  """Date of the image pull."""
+  downloadDate: String!
+
+  """Tags of the image pulled."""
+  imageTags: [String]!
+
+  """Number of image pulls associated with their tags."""
+  pullCount: Int!
+}
+
+enum Category {
+  SOFTWARE
+  HARDWARE
+}
+
+enum Category2 {
+  DOCUMENTATION___SUPPORT
+  CASE_STUDIES
+}
+
+type CertificationProject {
+  """URI to the certification projects."""
+  href: String
+}
+
+enum CertificationStatus {
+  CERTIFICATION_CHECKLIST_IN_PROGRESS
+  CERTIFICATION_COMPLETED
+  CERTIFICATION_TESTS_IN_PROGRESS
+  IN_PROGRESS
+  PUBLISHED
+  READY_FOR_CERTIFICATION
+  UNPUBLISHED
+  WAITING_FOR_CONTAINER_IMAGE
+}
+
+"""Store information about image comparison."""
+type Comparison {
+  """Mapping of a NVRA to multiple advisories IDs."""
+  advisoryRpmMapping: [AdvisoryRpmMappingListItem]
+
+  """Reason why 'with_nvr' is or is not null."""
+  reason: String
+
+  """Human readable reason."""
+  reasonText: String
+
+  """List of rpms grouped by category (new, remove, upgrade, downgrade)."""
+  rpms: Rpms
+
+  """NVR of image which this image was compared with."""
+  withNvr: String
+}
+
+"""
+General contact information for the vendor, to be displayed on the vendor page on RHCC.
+"""
+type Contact {
+  """General contact email address."""
+  email: String
+
+  """General contact phone number."""
+  phone: String
+}
+
+type ContactsListItem {
+  emailAddress: String
+  type: Type2
+}
+
+input ContactsListItemInput {
+  emailAddress: String
+  type: Type2
+}
+
+type Container {
+  """
+  Once a container is certified it is automatically published.
+  Auto-publish must be enabled in order to set up automatic
+  rebuilds.
+  
+  """
+  autoPublish: Boolean
+
+  """Auto rebuild enabled."""
+  autoRebuild: Boolean
+
+  """Distribution approval obtained."""
+  distributionApproval: Boolean
+
+  """Distribution method."""
+  distributionMethod: DistributionMethod
+
+  """ID of the project in for ISV repositories."""
+  isvPid: String
+
+  """Kubernetes objects for operator registry projects."""
+  kubeObjects: String
+  links: Links9
+
+  """OS Content Type."""
+  osContentType: String
+
+  """Passed RH Cert."""
+  passedRhcert: Boolean
+
+  """A container needs to run in a privileged state."""
+  privileged: Boolean
+
+  """
+  Indicate that the repository does not have any images in it or has been deleted.
+  """
+  published: Boolean
+
+  """Hostname of the registry where the repository can be accessed."""
+  registry: String
+
+  """
+  Note: These instructions will be displayed in the Red Hat
+  Container Catalog as is. Please modify the following template
+  as it suits your needs.
+  
+  """
+  registryOverrideInstruct: String
+
+  """Registry Vendor."""
+  registryVendor: RegistryVendor
+
+  """Release category."""
+  releaseCategory: ReleaseCategory
+
+  """Repository name."""
+  repository: String
+
+  """Repository description."""
+  repositoryDescription: String
+
+  """Service Account Secret."""
+  serviceAccountSecret: String
+
+  """Supported Platforms."""
+  supportPlatforms: [SupportPlatformsListItem]
+
+  """Container type."""
+  type: Type5
+}
+
+input ContainerInput {
+  """
+  Once a container is certified it is automatically published.
+  Auto-publish must be enabled in order to set up automatic
+  rebuilds.
+  
+  """
+  autoPublish: Boolean
+
+  """Auto rebuild enabled."""
+  autoRebuild: Boolean
+
+  """Distribution approval obtained."""
+  distributionApproval: Boolean
+
+  """Distribution method."""
+  distributionMethod: DistributionMethod
+
+  """ID of the project in for ISV repositories."""
+  isvPid: String
+
+  """Kubernetes objects for operator registry projects."""
+  kubeObjects: String
+  links: Links9Input
+
+  """OS Content Type."""
+  osContentType: String
+
+  """Passed RH Cert."""
+  passedRhcert: Boolean
+
+  """A container needs to run in a privileged state."""
+  privileged: Boolean
+
+  """
+  Indicate that the repository does not have any images in it or has been deleted.
+  """
+  published: Boolean
+
+  """Hostname of the registry where the repository can be accessed."""
+  registry: String
+
+  """
+  Note: These instructions will be displayed in the Red Hat
+  Container Catalog as is. Please modify the following template
+  as it suits your needs.
+  
+  """
+  registryOverrideInstruct: String
+
+  """Registry Vendor."""
+  registryVendor: RegistryVendor
+
+  """Release category."""
+  releaseCategory: ReleaseCategory
+
+  """Repository name."""
+  repository: String
+
+  """Repository description."""
+  repositoryDescription: String
+
+  """Service Account Secret."""
+  serviceAccountSecret: String
+
+  """Supported Platforms."""
+  supportPlatforms: [SupportPlatformsListItem]
+
+  """Container type."""
+  type: Type5
+}
+
+enum ContainerType {
+  CONTAINER
+  OPERATOR
+}
+
+enum ContentType {
+  RPM
+  CONTAINER
+  APB
+}
+
+enum CurrentGrade {
+  A
+  B
+  C
+  D
+  E
+  F
+}
+
+type CvesListItem {
+  """Unique identifier of the issue in the issue tracking system."""
+  id: String!
+
+  """Publicly accessible URL of the issue information."""
+  url: String!
+}
+
+type Data2ListItem {
+  """Advisory identifier."""
+  advisoryId: String!
+
+  """Advisory type (RHSA, RHBA, ...)."""
+  advisoryType: String!
+
+  """Date the record was created.  Value always generated on inset."""
+  creationDate: String
+
+  """ID of the CVE."""
+  cveId: String!
+  lastUpdateDate: String
+  links: Links5
+  objectType: String
+
+  """Array of package information applicable to this CVE."""
+  packages: [PackagesListItem]!
+
+  """CVE severity."""
+  severity: String!
+}
+
+type Data3ListItem {
+  """
+  This is the field for multi-arch to distinguish between default 64bit and other arch's. Can be empty if 64bit.
+  """
+  architecture: String
+
+  """Object for all brew related fields."""
+  brew: Brew
+
+  """A map of applicable advisories to RPM NEVRA, required for scoring."""
+  cpeIds: [String]
+
+  """
+  A map of applicable advisories for the base_images from the red hat repositories.
+  """
+  cpeIdsRhBaseImages: [String]
+
+  """Date the record was created.  Value always generated on inset."""
+  creationDate: String
+
+  """
+  Docker Image ID. For docker 1.10 this is also known as the 'config digest'.
+  """
+  dockerImageId: String
+
+  """
+  the grade based on applicable updates and time provided by PST CVE engine.
+  """
+  freshnessGrades: [FreshnessGradesListItem]
+  id: String
+  lastUpdateDate: String
+  links: Links
+  objectType: String
+
+  """
+  Data parsed from image metadata.  These fields are not computed from any other source.
+  """
+  parsedData: ParsedData
+  repositories: [RepositoriesListItem]
+
+  """
+  The total size of the sum of all layers for each image in bytes. This is
+  computed externally and may not match what is reported by the image metadata
+  (see parsed_data.size).
+  """
+  sumLayerSizeBytes: Int
+
+  """Field for multiarch primary key"""
+  topLayerId: String
+}
+
+type Data4ListItem {
+  category: Category
+  certProjects: [String]
+
+  """This field is required when the product listing is published."""
+  contacts: [ContactsListItem]
+
+  """Date the record was created. Auto generated."""
+  creationDate: String
+
+  """This field is required when the product listing is published."""
+  descriptions: Descriptions
+
+  """Company node ID from Red Hat Connect. Read only."""
+  drupalCompanyId: Int
+
+  """This field is required when the product listing is published."""
+  faqs: [FaqsListItem]
+
+  """This field is required when the product listing is published."""
+  features: [FeaturesListItem]
+
+  """This field is required when the product listing is published."""
+  functionalCategories: [FunctionalCategoriesListItem]
+
+  """Unique identifier for the product listing."""
+  id: String
+
+  """Date the record was last updated. Auto generated."""
+  lastUpdateDate: String
+  legal: Legal
+
+  """This field is required when the product listing is published."""
+  linkedResources: [LinkedResourcesListItem]
+  links: Links7
+  logo: Logo
+  marketplace: Marketplace
+  name: String
+  published: Boolean
+  quickStartConfiguration: QuickStartConfiguration
+  repositories: [String]
+
+  """This field is required when the product listing is published."""
+  searchAliases: [SearchAliasesListItem]
+
+  """This field is required when the product listing is published."""
+  support: Support
+  type: Type4
+  vendorLabel: String
+}
+
+type Data5ListItem {
+  """Certification Date."""
+  certificationDate: String
+
+  """Certification Status."""
+  certificationStatus: CertificationStatus
+
+  """Certification User."""
+  certificationUser: Int
+  container: Container
+
+  """Date the record was created.\ Value always generated on inset."""
+  creationDate: String
+  drupal: Drupal
+
+  """Unique identifier for the certification project."""
+  id: String
+
+  """Date the record was last updated.\ Value always generated on update."""
+  lastUpdateDate: String
+  links: Links8
+
+  """The owner provided name of the certification project."""
+  name: String
+
+  """Operator Distribution."""
+  operatorDistribution: String
+  productListings: [String]
+
+  """Status of the certification project."""
+  projectStatus: ProjectStatus
+
+  """Who published the certification project."""
+  publishedBy: PublishedBy
+  redhat: Redhat
+  selfCertification: SelfCertification
+}
+
+type Data6ListItem {
+  """The application categories (types). AUTHENTICATION OPTIONAL."""
+  applicationCategories: [String]
+
+  """
+  Contains unique list of all container architectures for the given repository.
+  """
+  architectures: [String]
+
+  """Denote which tags to be used for auto-rebuilding processes."""
+  autoRebuildTags: [String]
+
+  """Flag indicating whether the repository is still beta or not."""
+  beta: Boolean
+
+  """
+  What build categories does this fall into, such as standalone, s2i builder, etc.
+  """
+  buildCategories: [String]
+
+  """
+  Flag indicating whether the repository has opted-in to auto-release auto-built images.
+  """
+  canAutoReleaseCveRebuild: Boolean
+  cdnBaseUrl: String
+
+  """
+  DEPRECATED: use containerImage.content_sets instead. To provide customers
+  information which yum repos to enable to be able to update the container content.
+  """
+  contentSets: [String]
+
+  """
+  Capture and provide an inventory of tags corresponding to the content streams.
+  """
+  contentStreamTags: [String]
+
+  """Date the record was created. Value always generated on inset."""
+  creationDate: String
+
+  """Flag indicating whether the repository is still supported or not."""
+  deprecated: Boolean
+
+  """Description of the repository."""
+  description: String
+  displayData: DisplayData
+
+  """
+  Links to marketing and doc collateral including categorization (solution
+  brief, white paper, demo video, etc.) supposed to be displayed on the product
+  page (NOT documentation tab on image overview tab).
+  """
+  documentationLinks: [DocumentationLinksListItem]
+  eolDate: String
+
+  """Date until the freshness grades for this repository are unknown."""
+  freshnessGradesUnknownUntilDate: String
+  id: String
+
+  """Defines  whether a repository contains multiple image streams."""
+  includesMultipleContentStreams: Boolean
+
+  """Designates whether a repository is community-supported."""
+  isCommunitySupported: Boolean
+
+  """ID of the project in for ISV repositories."""
+  isvPid: String
+
+  """
+  Manually overriden label values.  When set, should be taken instead of label set on the image.
+  """
+  labelOverride: LabelOverride
+  lastUpdateDate: String
+  links: Links10
+
+  """Set of metrics about the repository."""
+  metrics: Metrics
+
+  """Namespace of the repository."""
+  namespace: String
+
+  """Repository is intended for non-production use only."""
+  nonProductionOnly: Boolean
+  objectType: String
+
+  """
+  Indicates if images in this repository are allowed to run super-privileged.
+  """
+  privilegedImagesAllowed: Boolean
+
+  """ID of the project in PRM.  Only for ISV repositories."""
+  prmProjectId: String
+
+  """
+  DEPRECATED: The product data has been replaced by product listings for ISVs.
+  For RH products it will be replaced June 2020. Reference to the product for
+  this repository by id.
+  """
+  productId: String
+  productListings: [String]
+
+  """Map repositories to specific product versions."""
+  productVersions: [String]
+  protectedForPull: Boolean
+
+  """
+  Does the repository require subscription or other access restrictions for search?.
+  """
+  protectedForSearch: Boolean
+
+  """
+  Indicate that the repository does not have any images in it or has been deleted.
+  """
+  published: Boolean
+
+  """Hostname of the registry where the repository can be accessed."""
+  registry: String
+
+  """
+  consumed by the Registry Proxy so that it can route users to the proper backend registry (e.g. Pulp or Quay).
+  """
+  registryTarget: String
+
+  """
+  The release categories of a repository like 'Tech Preview', 'Beta', 'Deprecated'.
+  """
+  releaseCategories: [String]
+
+  """If deprecated what is the new repo name we should point to instead?"""
+  replacedByRepositoryName: String
+
+  """Combination of image repository and namespace."""
+  repository: String
+
+  """
+  Flag indicating whether (false) the repository is published on the legacy
+  registry (registry.access.redhat.com), or (true) can only be published to
+  registry.redhat.io.
+  """
+  requiresTerms: Boolean
+
+  """Describes what the image can be run on."""
+  runsOn: RunsOn
+
+  """
+  Flag indicating whether images associated with this repo are included in
+  workflows where non-binary container images are published alongside their
+  binary counterparts.
+  """
+  sourceContainerImageEnabled: Boolean
+
+  """The support levels of a repository."""
+  supportLevels: [String]
+
+  """Flag indicating whether the repository is in tech preview or not."""
+  techPreview: Boolean
+
+  """Total size of all images in bytes."""
+  totalSizeBytes: Int
+
+  """Total size of all uncompressed images in bytes."""
+  totalUncompressedSizeBytes: Int
+
+  """
+  When populated this field will override the content on the 'get this image' tab in red hat container catalog.
+  """
+  uiGetThisImageOverride: String
+
+  """Label of the vendor that owns this repository."""
+  vendorLabel: String
+}
+
+"""Object with all databases statuses"""
+type Databases {
+  """Database status information"""
+  mongo: Mongo
+
+  """Database status information"""
+  vdb: Vdb
+}
+
+type DataListItem {
+  content: String
+  filename: String!
+  key: String!
+}
+
+"""This field is required when the product listing is published."""
+type Descriptions {
+  long: String
+  short: String
+}
+
+"""This field is required when the product listing is published."""
+input DescriptionsInput {
+  long: String
+  short: String
+}
+
+type DisplayData {
+  """The long description of the repository."""
+  longDescription: String
+
+  """Markdown for the long description of the repository."""
+  longDescriptionMarkdown: String
+
+  """The repository name."""
+  name: String
+
+  """The io_openshift_tags."""
+  openshiftTags: String
+
+  """The short description of the repository."""
+  shortDescription: String
+}
+
+enum DistributionMethod {
+  NON_REGISTRY
+  MARKETPLACE_ONLY
+}
+
+type DocumentationLinksListItem {
+  """Title of the link."""
+  title: String!
+
+  """The type of collateral."""
+  type: Type6!
+
+  """The URL for the documentation."""
+  url: String!
+}
+
+type Drupal {
+  """
+  Company node ID from Red Hat Connect.\ In external environments this field is read-only.
+  """
+  companyId: Int
+
+  """Relation ID for certification project."""
+  relation: Int
+
+  """Zone for certification project."""
+  zone: String
+}
+
+input DrupalInput {
+  """
+  Company node ID from Red Hat Connect.\ In external environments this field is read-only.
+  """
+  companyId: Int
+
+  """Relation ID for certification project."""
+  relation: Int
+
+  """Zone for certification project."""
+  zone: String
+}
+
+enum EnablementStatus {
+  ELIGIBLE
+  REQUESTED
+  APPROVED
+  DENIED
+  INELIGIBLE
+}
+
+type FaqsListItem {
+  answer: String
+  question: String
+}
+
+input FaqsListItemInput {
+  answer: String
+  question: String
+}
+
+type FeaturesListItem {
+  description: String
+  title: String
+}
+
+input FeaturesListItemInput {
+  description: String
+  title: String
+}
+
+"""The next image that fixes this vulnerability."""
+type FixedByImage {
+  """The _id of the image that fixes the vulnerability."""
+  id: String!
+  links: Links6
+
+  """
+  Denormalized to not require lookup in UI.  RISK: could get out of sync with real refrenced data.
+  """
+  repositories: [Repositories2ListItem]!
+}
+
+"""Object with all log forwarder statuses"""
+type Forwarders {
+  """Splunk forwarder status information"""
+  splunk: Splunk
+}
+
+type FreshnessGradesListItem {
+  """
+  The timestamp for when this grade was added by the vulnerability engine.
+  """
+  creationDate: String
+
+  """
+  The timestamp for when the grade no longer applies. See start_date for when
+  the grade starts.  If no value is set, the grade applies forever.  This should
+  happen only for a grade of A (no vulnerabilities) or grade F.
+  """
+  endDate: String
+
+  """The grade."""
+  grade: Grade
+
+  """
+  The timestamp for when the grade applies.  See end_date for when the grade stops.
+  """
+  startDate: String
+}
+
+enum FunctionalCategoriesListItem {
+  AI___MACHINE_LEARNING
+  ANALYTICS
+  BLOG___CMS
+  BLOCKCHAIN
+  BUSINESS_SOFTWARE
+  COMPUTE
+  DATA_STORAGE
+  DEVELOPER_STACKS
+  DEVELOPER_TOOLS
+  DEVOPS
+  IT___MANAGEMENT_TOOLS
+  MOBILE
+  MONITORING
+  NETWORKING
+  OS___PLATFORMS
+  SECURITY
+  OTHER
+}
+
+enum Grade {
+  A
+  B
+  C
+  D
+  E
+  F
+}
+
+type HistoryListItem {
+  """Unique immutable build identifier in the brew build system."""
+  brewBuild: String
+  endDate: String
+
+  """The date for when the tag for the given docker_image_digest starts."""
+  startDate: String!
+}
+
+type Image {
+  """URI to the container image."""
+  href: String
+}
+
+type Image2 {
+  """URI to the container image that fixes the vulnerability."""
+  href: String
+}
+
+type Image3 {
+  """URI to this grades's image."""
+  href: String
+}
+
+type ImageAdvisory {
+  """URI to the image advisory."""
+  href: String
+}
+
+type Images {
+  """URI to this repository's images."""
+  href: String
+}
+
+type Images2 {
+  """URI to this tag's images."""
+  href: String
+}
+
+type ImagesId {
+  """
+  This is the field for multi-arch to distinguish between default 64bit and other arch's. Can be empty if 64bit.
+  """
+  architecture: String
+
+  """Object for all brew related fields."""
+  brew: Brew
+
+  """A map of applicable advisories to RPM NEVRA, required for scoring."""
+  cpeIds: [String]
+
+  """
+  A map of applicable advisories for the base_images from the red hat repositories.
+  """
+  cpeIdsRhBaseImages: [String]
+
+  """Date the record was created.  Value always generated on inset."""
+  creationDate: String
+
+  """
+  Docker Image ID. For docker 1.10 this is also known as the 'config digest'.
+  """
+  dockerImageId: String
+
+  """
+  the grade based on applicable updates and time provided by PST CVE engine.
+  """
+  freshnessGrades: [FreshnessGradesListItem]
+  id: String
+  lastUpdateDate: String
+  links: Links
+  objectType: String
+
+  """
+  Data parsed from image metadata.  These fields are not computed from any other source.
+  """
+  parsedData: ParsedData
+  repositories: [RepositoriesListItem]
+
+  """
+  The total size of the sum of all layers for each image in bytes. This is
+  computed externally and may not match what is reported by the image metadata
+  (see parsed_data.size).
+  """
+  sumLayerSizeBytes: Int
+
+  """Field for multiarch primary key"""
+  topLayerId: String
+}
+
+type ImagesIdFiles {
+  data: [DataListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type ImagesIdRpmManifest {
+  """Date the record was created. Value always generated on inset."""
+  creationDate: String
+  id: String
+
+  """The foreign key to containerImage._id."""
+  imageId: String!
+  lastUpdateDate: String
+  links: Links4
+  objectType: String
+
+  """Content manifest of this image.  RPM content included in the image."""
+  rpms: [Rpms2ListItem]
+}
+
+type ImagesIdVulnerabilities {
+  data: [Data2ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type ImagesNvr {
+  data: [Data3ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type ImagesRpmManifestId {
+  """Date the record was created. Value always generated on inset."""
+  creationDate: String
+  id: String
+
+  """The foreign key to containerImage._id."""
+  imageId: String!
+  lastUpdateDate: String
+  links: Links4
+  objectType: String
+
+  """Content manifest of this image.  RPM content included in the image."""
+  rpms: [Rpms2ListItem]
+}
+
+type ImagesVulnerabilitiesId {
+  """Advisory identifier."""
+  advisoryId: String!
+
+  """Advisory type (RHSA, RHBA, ...)."""
+  advisoryType: String!
+
+  """Date the record was created.  Value always generated on inset."""
+  creationDate: String
+
+  """ID of the CVE."""
+  cveId: String!
+  lastUpdateDate: String
+  links: Links5
+  objectType: String
+
+  """Array of package information applicable to this CVE."""
+  packages: [PackagesListItem]!
+
+  """CVE severity."""
+  severity: String!
+}
+
+type IssuesListItem {
+  """Unique identifier of the issue in the issue tracking system."""
+  id: String
+
+  """Hostname of the issue tracking system used."""
+  issueTracker: String
+
+  """Publicly accessible URL of the issue information."""
+  url: String
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""
+Manually overriden label values.  When set, should be taken instead of label set on the image.
+"""
+type LabelOverride {
+  """Override for 'description' label."""
+  description: String
+
+  """Override for 'io.k8s.display-name' label."""
+  ioK8sDisplayName: String
+
+  """Override for 'io.openshift.tags' label."""
+  ioOpenshiftTags: String
+
+  """Override for 'summary' label."""
+  summary: String
+}
+
+type LabelsListItem {
+  """name of the label."""
+  name: String
+
+  """value of the label."""
+  value: String
+}
+
+type Legal {
+  description: String
+  licenseAgreementUrl: String
+  privacyPolicyUrl: String
+}
+
+input LegalInput {
+  description: String
+  licenseAgreementUrl: String
+  privacyPolicyUrl: String
+}
+
+type LinkedResourcesListItem {
+  category: Category2
+  description: String
+  thumbnailUrl: String
+  title: String
+  type: Type3
+  url: String
+}
+
+input LinkedResourcesListItemInput {
+  category: Category2
+  description: String
+  thumbnailUrl: String
+  title: String
+  type: Type3
+  url: String
+}
+
+type Links {
+  rpmManifest: RpmManifest
+  vulnerabilities: Vulnerabilities
+}
+
+type Links10 {
+  certificationProject: CertificationProject
+  images: Images
+  operatorPackage: OperatorPackage
+  product: Product
+  productListings: ProductListings5
+  replacedByRepository: ReplacedByRepository
+  vendor: Vendor3
+}
+
+type Links11 {
+  repositories: Repositories4
+  vendor: Vendor4
+}
+
+type Links12 {
+  image: Image3
+}
+
+type Links13 {
+  productListings: ProductListings6
+  repositories: Repositories6
+}
+
+type Links14 {
+  images: Images2
+}
+
+type Links2 {
+  imageAdvisory: ImageAdvisory
+  repository: Repository
+}
+
+type Links3 {
+  tagHistory: TagHistory
+}
+
+type Links4 {
+  image: Image
+}
+
+type Links5 {
+  advisory: Advisory
+}
+
+type Links6 {
+  image: Image2
+}
+
+type Links7 {
+  vendor: Vendor
+}
+
+input Links7Input {
+  vendor: VendorInput
+}
+
+type Links8 {
+  vendor: Vendor2
+}
+
+input Links8Input {
+  vendor: Vendor2Input
+}
+
+type Links9 {
+  repository: RepositoryHREF
+}
+
+input Links9Input {
+  repository: RepositoryHREF
+}
+
+type Logo {
+  url: String
+}
+
+input LogoInput {
+  url: String
+}
+
+type Marketplace {
+  enablementStatus: EnablementStatus
+  enablementUrl: String
+  listingUrl: String
+  published: Boolean
+}
+
+input MarketplaceInput {
+  enablementStatus: EnablementStatus
+  enablementUrl: String
+  listingUrl: String
+  published: Boolean
+}
+
+"""Set of metrics about the repository."""
+type Metrics {
+  """
+  The date and time when these metrics were last updated for the repository.
+  """
+  lastUpdateDate: String
+
+  """The number of pulls in the last 30 days for the repository."""
+  pullsInLast30Days: Int
+}
+
+"""Database status information"""
+type Mongo {
+  """Database response time in seconds"""
+  responseTime: Float
+
+  """Database status"""
+  status: Boolean
+}
+
+type Mutation {
+  """
+  A viewer that wraps operations for all available authentication mechanisms
+  """
+  mutationViewerAnyAuth(jWT: JSON): MutationViewerAnyAuth
+}
+
+"""Warning: Not every request will work with this viewer type"""
+type MutationViewerAnyAuth {
+  """
+  Create a product listing
+  
+  Equivalent to POST /product-listings
+  """
+  pyxisProductListingsCreateProductListing(productListings2Input: ProductListings2Input!): ProductListings3
+
+  """
+  Partially update a product listing
+  
+  Equivalent to PATCH /product-listings/id/{identifier}
+  """
+  pyxisProductListingsPatchProductListing(
+    """ID of the resource"""
+    identifier: String!
+    productListingsIdInput: ProductListingsIdInput!
+  ): ProductListingsId
+
+  """
+  Update a product listing
+  
+  Equivalent to PUT /product-listings/id/{identifier}
+  """
+  pyxisProductListingsUpdateProductListing(
+    """ID of the resource"""
+    identifier: String!
+    productListingsId2Input: ProductListingsId2Input!
+  ): ProductListingsId
+
+  """
+  Create a certification project
+  
+  Equivalent to POST /projects/certification
+  """
+  pyxisProjectsCreateCertificationProject(projectsCertificationInput: ProjectsCertificationInput!): ProjectsCertification2
+
+  """
+  Partially update a certification project
+  
+  Equivalent to PATCH /projects/certification/id/{identifier}
+  """
+  pyxisProjectsPatchCertificationProject(
+    """ID of the resource"""
+    identifier: String!
+    projectsCertificationIdInput: ProjectsCertificationIdInput!
+  ): ProjectsCertificationId
+
+  """
+  Update a certification project
+  
+  Equivalent to PUT /projects/certification/id/{identifier}
+  """
+  pyxisProjectsUpdateCertificationProject(
+    """ID of the resource"""
+    identifier: String!
+    projectsCertificationId2Input: ProjectsCertificationId2Input!
+  ): ProjectsCertificationId
+}
+
+type OperatorPackage {
+  """URI to this repository's operator package."""
+  href: String
+}
+
+type PackagesListItem {
+  """The next image that fixes this vulnerability."""
+  fixedByImage: FixedByImage
+
+  """Array of RPM nvra in this image that are vulnerable."""
+  rpmNvra: [String]!
+
+  """The source RPM that has the fix."""
+  srpmNevra: String!
+}
+
+"""
+Data parsed from image metadata.  These fields are not computed from any other source.
+"""
+type ParsedData {
+  architecture: String
+  author: String
+  command: String
+  comment: String
+  container: String
+
+  """
+  The 'created' date reported by image metadata. Stored as string because we do not have control on that format.
+  """
+  created: String
+  dockerImageDigest: String
+  dockerImageId: String
+
+  """Version of docker reported by 'docker inspect' for this image."""
+  dockerVersion: String
+  envVariables: [String]
+  imageId: String
+  labels: [LabelsListItem]
+
+  """Array of layer digests from the image."""
+  layers: [String]
+  os: String
+  ports: String
+
+  """Repositories defined within an image as reported by yum command."""
+  repos: [ReposListItem]
+
+  """Size of this image as reported by image metadata."""
+  size: Int
+
+  """Information about uncompressed layer sizes"""
+  uncompressedLayerSizes: [UncompressedLayerSizesListItem]
+
+  """Uncompressed images size in bytes (sum of uncompressed layers size)."""
+  uncompressedSizeBytes: Int
+
+  """The user on the images."""
+  user: String
+
+  """Virtual size of this image as reported by image metadata."""
+  virtualSize: Int
+}
+
+type Product {
+  """
+  DEPRECATED: The product data has been replaced by product listings for ISVs.
+  For RH products it will be replaced June 2020. URI to this repository's product.
+  """
+  href: String
+}
+
+type ProductListings {
+  data: [Data4ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+input ProductListings2Input {
+  category: Category
+  certProjects: [String]
+
+  """This field is required when the product listing is published."""
+  contacts: [ContactsListItemInput]
+
+  """Date the record was created. Auto generated."""
+  creationDate: String
+
+  """This field is required when the product listing is published."""
+  descriptions: DescriptionsInput
+
+  """Company node ID from Red Hat Connect. Read only."""
+  drupalCompanyId: Int
+
+  """This field is required when the product listing is published."""
+  faqs: [FaqsListItemInput]
+
+  """This field is required when the product listing is published."""
+  features: [FeaturesListItemInput]
+
+  """This field is required when the product listing is published."""
+  functionalCategories: [FunctionalCategoriesListItem]
+
+  """Unique identifier for the product listing."""
+  id: String
+
+  """Date the record was last updated. Auto generated."""
+  lastUpdateDate: String
+  legal: LegalInput
+  linkedResources: JSON
+  links: Links7Input
+  logo: LogoInput
+  marketplace: JSON
+  name: String!
+  published: Boolean!
+  quickStartConfiguration: QuickStartConfigurationInput
+  repositories: [String]
+
+  """This field is required when the product listing is published."""
+  searchAliases: [SearchAliasesListItemInput]
+
+  """This field is required when the product listing is published."""
+  support: SupportInput
+  vendorLabel: String
+}
+
+type ProductListings3 {
+  category: Category
+  certProjects: [String]
+
+  """This field is required when the product listing is published."""
+  contacts: [ContactsListItem]
+
+  """Date the record was created. Auto generated."""
+  creationDate: String
+
+  """This field is required when the product listing is published."""
+  descriptions: Descriptions
+
+  """Company node ID from Red Hat Connect. Read only."""
+  drupalCompanyId: Int
+
+  """This field is required when the product listing is published."""
+  faqs: [FaqsListItem]
+
+  """This field is required when the product listing is published."""
+  features: [FeaturesListItem]
+
+  """This field is required when the product listing is published."""
+  functionalCategories: [FunctionalCategoriesListItem]
+
+  """Unique identifier for the product listing."""
+  id: String
+
+  """Date the record was last updated. Auto generated."""
+  lastUpdateDate: String
+  legal: Legal
+
+  """This field is required when the product listing is published."""
+  linkedResources: [LinkedResourcesListItem]
+  links: Links7
+  logo: Logo
+  marketplace: Marketplace
+  name: String
+  published: Boolean
+  quickStartConfiguration: QuickStartConfiguration
+  repositories: [String]
+
+  """This field is required when the product listing is published."""
+  searchAliases: [SearchAliasesListItem]
+
+  """This field is required when the product listing is published."""
+  support: Support
+  type: Type4
+  vendorLabel: String
+}
+
+type ProductListings5 {
+  """URI to this repository's product listings."""
+  href: String
+}
+
+type ProductListings6 {
+  """URI to this vendor's product listings."""
+  href: String
+}
+
+type ProductListingsId {
+  category: Category
+  certProjects: [String]
+
+  """This field is required when the product listing is published."""
+  contacts: [ContactsListItem]
+
+  """Date the record was created. Auto generated."""
+  creationDate: String
+
+  """This field is required when the product listing is published."""
+  descriptions: Descriptions
+
+  """Company node ID from Red Hat Connect. Read only."""
+  drupalCompanyId: Int
+
+  """This field is required when the product listing is published."""
+  faqs: [FaqsListItem]
+
+  """This field is required when the product listing is published."""
+  features: [FeaturesListItem]
+
+  """This field is required when the product listing is published."""
+  functionalCategories: [FunctionalCategoriesListItem]
+
+  """Unique identifier for the product listing."""
+  id: String
+
+  """Date the record was last updated. Auto generated."""
+  lastUpdateDate: String
+  legal: Legal
+
+  """This field is required when the product listing is published."""
+  linkedResources: [LinkedResourcesListItem]
+  links: Links7
+  logo: Logo
+  marketplace: Marketplace
+  name: String
+  published: Boolean
+  quickStartConfiguration: QuickStartConfiguration
+  repositories: [String]
+
+  """This field is required when the product listing is published."""
+  searchAliases: [SearchAliasesListItem]
+
+  """This field is required when the product listing is published."""
+  support: Support
+  type: Type4
+  vendorLabel: String
+}
+
+input ProductListingsId2Input {
+  category: Category
+  certProjects: [String]
+
+  """This field is required when the product listing is published."""
+  contacts: [ContactsListItemInput]
+
+  """Date the record was created. Auto generated."""
+  creationDate: String
+
+  """This field is required when the product listing is published."""
+  descriptions: DescriptionsInput
+
+  """Company node ID from Red Hat Connect. Read only."""
+  drupalCompanyId: Int
+
+  """This field is required when the product listing is published."""
+  faqs: [FaqsListItemInput]
+
+  """This field is required when the product listing is published."""
+  features: [FeaturesListItemInput]
+
+  """This field is required when the product listing is published."""
+  functionalCategories: [FunctionalCategoriesListItem]
+
+  """Unique identifier for the product listing."""
+  id: String
+
+  """Date the record was last updated. Auto generated."""
+  lastUpdateDate: String
+  legal: LegalInput
+  linkedResources: JSON
+  links: Links7Input
+  logo: LogoInput
+  marketplace: JSON
+  name: String!
+  published: Boolean!
+  quickStartConfiguration: QuickStartConfigurationInput
+  repositories: [String]
+
+  """This field is required when the product listing is published."""
+  searchAliases: [SearchAliasesListItemInput]
+
+  """This field is required when the product listing is published."""
+  support: SupportInput
+  vendorLabel: String
+}
+
+input ProductListingsIdInput {
+  category: Category
+  certProjects: [String]
+
+  """This field is required when the product listing is published."""
+  contacts: [ContactsListItemInput]
+
+  """Date the record was created. Auto generated."""
+  creationDate: String
+
+  """This field is required when the product listing is published."""
+  descriptions: DescriptionsInput
+
+  """Company node ID from Red Hat Connect. Read only."""
+  drupalCompanyId: Int
+
+  """This field is required when the product listing is published."""
+  faqs: [FaqsListItemInput]
+
+  """This field is required when the product listing is published."""
+  features: [FeaturesListItemInput]
+
+  """This field is required when the product listing is published."""
+  functionalCategories: [FunctionalCategoriesListItem]
+
+  """Unique identifier for the product listing."""
+  id: String
+
+  """Date the record was last updated. Auto generated."""
+  lastUpdateDate: String
+  legal: LegalInput
+
+  """This field is required when the product listing is published."""
+  linkedResources: [LinkedResourcesListItemInput]
+  links: Links7Input
+  logo: LogoInput
+  marketplace: MarketplaceInput
+  name: String
+  published: Boolean
+  quickStartConfiguration: QuickStartConfigurationInput
+  repositories: [String]
+
+  """This field is required when the product listing is published."""
+  searchAliases: [SearchAliasesListItemInput]
+
+  """This field is required when the product listing is published."""
+  support: SupportInput
+  type: Type4
+  vendorLabel: String
+}
+
+type ProductListingsIdProjectsCertification {
+  data: [Data5ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type ProductListingsIdRepositories {
+  data: [Data6ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type ProductsId {
+  """The application categories (types). AUTHENTICATION OPTIONAL."""
+  applicationCategories: [String]
+
+  """
+  What build categories does this fall into, such as standalone, s2i builder, etc.
+  """
+  buildCategories: [String]
+
+  """Date the record was created. Value always generated on inset."""
+  creationDate: String
+
+  """
+  Links to marketing and doc collateral including categorization (solution
+  brief, white paper, demo video, etc.) supposed to be displayed on the product
+  page (NOT documentation tab on image overview tab).
+  """
+  documentationLinks: [DocumentationLinksListItem]
+
+  """Unique identifier for the product."""
+  id: String
+
+  """the industry / vertical for the product."""
+  industries: [String]
+
+  """All relevant keywords resp. search terms for a particular product."""
+  keywords: [String]
+
+  """
+  All hidden keywords resp. search terms for a particular product, but not visible to the user.
+  """
+  keywordsHidden: [String]
+
+  """Date the record was last updated. Value always generated on update."""
+  lastUpdateDate: String
+  links: Links11
+
+  """Product URL similar to vendor logo."""
+  logoUrl: String
+
+  """a multi-sentence description of the product."""
+  longDescription: String
+
+  """markdown for the long description of the product."""
+  longDescriptionMarkdown: String
+
+  """the vendor provided name of the product."""
+  name: String!
+  objectType: String
+
+  """Indicate that the product has been published."""
+  published: Boolean!
+
+  """URLs of the product specific lifecycle policy document."""
+  releasePolicyUrls: [String]
+
+  """A one sentence desc as provided in connect."""
+  shortDescription: String
+
+  """URLs of the product specific support policy document."""
+  supportPolicyUrls: [String]
+
+  """_id of the corresponding containerTeam."""
+  teamId: String
+
+  """a link to vendor product URL."""
+  url: String
+
+  """Label of the vendor that owns this product."""
+  vendorLabel: String!
+}
+
+type ProductsIdRepositories {
+  data: [Data6ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type ProjectsCertification2 {
+  """Certification Date."""
+  certificationDate: String
+
+  """Certification Status."""
+  certificationStatus: CertificationStatus
+
+  """Certification User."""
+  certificationUser: Int
+  container: Container
+
+  """Date the record was created.\ Value always generated on inset."""
+  creationDate: String
+  drupal: Drupal
+
+  """Unique identifier for the certification project."""
+  id: String
+
+  """Date the record was last updated.\ Value always generated on update."""
+  lastUpdateDate: String
+  links: Links8
+
+  """The owner provided name of the certification project."""
+  name: String
+
+  """Operator Distribution."""
+  operatorDistribution: String
+  productListings: [String]
+
+  """Status of the certification project."""
+  projectStatus: ProjectStatus
+
+  """Who published the certification project."""
+  publishedBy: PublishedBy
+  redhat: Redhat
+  selfCertification: SelfCertification
+}
+
+type ProjectsCertificationId {
+  """Certification Date."""
+  certificationDate: String
+
+  """Certification Status."""
+  certificationStatus: CertificationStatus
+
+  """Certification User."""
+  certificationUser: Int
+  container: Container
+
+  """Date the record was created.\ Value always generated on inset."""
+  creationDate: String
+  drupal: Drupal
+
+  """Unique identifier for the certification project."""
+  id: String
+
+  """Date the record was last updated.\ Value always generated on update."""
+  lastUpdateDate: String
+  links: Links8
+
+  """The owner provided name of the certification project."""
+  name: String
+
+  """Operator Distribution."""
+  operatorDistribution: String
+  productListings: [String]
+
+  """Status of the certification project."""
+  projectStatus: ProjectStatus
+
+  """Who published the certification project."""
+  publishedBy: PublishedBy
+  redhat: Redhat
+  selfCertification: SelfCertification
+}
+
+input ProjectsCertificationId2Input {
+  """Certification Date."""
+  certificationDate: String
+
+  """Certification Status."""
+  certificationStatus: CertificationStatus
+
+  """Certification User."""
+  certificationUser: Int
+  container: JSON
+
+  """Date the record was created.\ Value always generated on inset."""
+  creationDate: String
+  drupal: JSON!
+
+  """Unique identifier for the certification project."""
+  id: String
+
+  """Date the record was last updated.\ Value always generated on update."""
+  lastUpdateDate: String
+  links: Links8Input
+
+  """The owner provided name of the certification project."""
+  name: String!
+
+  """Operator Distribution."""
+  operatorDistribution: String
+  productListings: [String]
+
+  """Status of the certification project."""
+  projectStatus: ProjectStatus
+
+  """Who published the certification project."""
+  publishedBy: PublishedBy
+  redhat: RedhatInput
+  selfCertification: SelfCertificationInput
+}
+
+input ProjectsCertificationIdInput {
+  """Certification Date."""
+  certificationDate: String
+
+  """Certification Status."""
+  certificationStatus: CertificationStatus
+
+  """Certification User."""
+  certificationUser: Int
+  container: ContainerInput
+
+  """Date the record was created.\ Value always generated on inset."""
+  creationDate: String
+  drupal: DrupalInput
+
+  """Unique identifier for the certification project."""
+  id: String
+
+  """Date the record was last updated.\ Value always generated on update."""
+  lastUpdateDate: String
+  links: Links8Input
+
+  """The owner provided name of the certification project."""
+  name: String
+
+  """Operator Distribution."""
+  operatorDistribution: String
+  productListings: [String]
+
+  """Status of the certification project."""
+  projectStatus: ProjectStatus
+
+  """Who published the certification project."""
+  publishedBy: PublishedBy
+  redhat: RedhatInput
+  selfCertification: SelfCertificationInput
+}
+
+type ProjectsCertificationIdProductListings {
+  data: [Data4ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+input ProjectsCertificationInput {
+  """Certification Date."""
+  certificationDate: String
+
+  """Certification Status."""
+  certificationStatus: CertificationStatus
+
+  """Certification User."""
+  certificationUser: Int
+  container: JSON
+
+  """Date the record was created.\ Value always generated on inset."""
+  creationDate: String
+  drupal: JSON!
+
+  """Unique identifier for the certification project."""
+  id: String
+
+  """Date the record was last updated.\ Value always generated on update."""
+  lastUpdateDate: String
+  links: Links8Input
+
+  """The owner provided name of the certification project."""
+  name: String!
+
+  """Operator Distribution."""
+  operatorDistribution: String
+  productListings: [String]
+
+  """Status of the certification project."""
+  projectStatus: ProjectStatus
+
+  """Who published the certification project."""
+  publishedBy: PublishedBy
+  redhat: RedhatInput
+  selfCertification: SelfCertificationInput
+}
+
+type ProjectsCertificationPid {
+  """Certification Date."""
+  certificationDate: String
+
+  """Certification Status."""
+  certificationStatus: CertificationStatus
+
+  """Certification User."""
+  certificationUser: Int
+  container: Container
+
+  """Date the record was created.\ Value always generated on inset."""
+  creationDate: String
+  drupal: Drupal
+
+  """Unique identifier for the certification project."""
+  id: String
+
+  """Date the record was last updated.\ Value always generated on update."""
+  lastUpdateDate: String
+  links: Links8
+
+  """The owner provided name of the certification project."""
+  name: String
+
+  """Operator Distribution."""
+  operatorDistribution: String
+  productListings: [String]
+
+  """Status of the certification project."""
+  projectStatus: ProjectStatus
+
+  """Who published the certification project."""
+  publishedBy: PublishedBy
+  redhat: Redhat
+  selfCertification: SelfCertification
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum PublishedBy {
+  RED_HAT
+  PARTNER
+}
+
+type Query {
+  """
+  Get a Red Hat advisory by ID
+  
+  Equivalent to GET /advisories/redhat/id/{identifier}
+  """
+  advisoriesRedhatId(
+    """ID of the resource"""
+    identifier: String!
+  ): AdvisoriesRedhatId
+
+  """
+  Get an image by ID
+  
+  Equivalent to GET /images/id/{identifier}
+  """
+  imagesId(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """ID of the resource"""
+    identifier: String!
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+  ): ImagesId
+
+  """
+  Get files for an image
+  
+  Equivalent to GET /images/id/{identifier}/files
+  """
+  imagesIdFiles(
+    """ID of the resource"""
+    identifier: String!
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): ImagesIdFiles
+
+  """
+  Get the RPM manifest for an image
+  
+  Equivalent to GET /images/id/{identifier}/rpm-manifest
+  """
+  imagesIdRpmManifest(
+    """ID of the resource"""
+    identifier: String!
+  ): ImagesIdRpmManifest
+
+  """
+  Get the vulnerabilities for an image
+  
+  Equivalent to GET /images/id/{identifier}/vulnerabilities
+  """
+  imagesIdVulnerabilities(
+    """ID of the resource"""
+    identifier: String!
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): ImagesIdVulnerabilities
+
+  """
+  Get images by Brew NVR
+  
+  Equivalent to GET /images/nvr/{nvr}
+  """
+  imagesNvr(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Brew NVR of the image"""
+    nvr: String!
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): ImagesNvr
+
+  """
+  Get an RPM manifest by ID
+  
+  Equivalent to GET /images/rpm-manifest/id/{identifier}
+  """
+  imagesRpmManifestId(
+    """ID of the resource"""
+    identifier: String!
+  ): ImagesRpmManifestId
+
+  """
+  Get a vulnerbility by ID
+  
+  Equivalent to GET /images/vulnerabilities/id/{identifier}
+  """
+  imagesVulnerabilitiesId(
+    """ID of the resource"""
+    identifier: String!
+  ): ImagesVulnerabilitiesId
+
+  """
+  Basic availability endpoint
+  
+  Equivalent to GET /ping
+  """
+  ping: String
+
+  """
+  Get all repositories belonging to product listing
+  
+  Equivalent to GET /product-listings/id/{identifier}/repositories
+  """
+  productListingsIdRepositories(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """ID of the resource"""
+    identifier: String!
+
+    """Filter repositories based on image usage type."""
+    imageUsageType: String
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): ProductListingsIdRepositories
+
+  """
+  DEPRECATED: The product data has been replaced by product listings for ISVs.
+  For RH products it will be replaced June 2020. Get a product by ID
+  
+  Equivalent to GET /products/id/{identifier}
+  """
+  productsId(
+    """ID of the resource"""
+    identifier: String!
+  ): ProductsId
+
+  """
+  DEPRECATED: The product data has been replaced by product listings for ISVs.
+  For RH products it will be replaced June 2020. Get the repositories for a product
+  
+  Equivalent to GET /products/id/{identifier}/repositories
+  """
+  productsIdRepositories(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """ID of the resource"""
+    identifier: String!
+
+    """Filter repositories based on image usage type."""
+    imageUsageType: String
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): ProductsIdRepositories
+
+  """
+  Get all repositories
+  
+  Equivalent to GET /repositories
+  """
+  repositories5(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """Filter repositories based on image usage type."""
+    imageUsageType: String
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): Repositories5
+
+  """
+  Get a repository by ID
+  
+  Equivalent to GET /repositories/id/{identifier}
+  """
+  repositoryById(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """ID of the resource"""
+    identifier: String!
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+  ): Repository
+
+  """
+  Get all product listings associated with repository
+  
+  Equivalent to GET /repositories/id/{identifier}/product-listings
+  """
+  repositoriesIdProductListings(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """ID of the resource"""
+    identifier: String!
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): RepositoriesIdProductListings
+
+  """
+  Get a repository by registry and path (product line/image name)
+  
+  Equivalent to GET /repositories/registry/{registry}/repository/{repository}
+  """
+  repositoriesRegistryRepository(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Container registry"""
+    registry: String!
+
+    """Path of the repository"""
+    repository: String!
+  ): RepositoriesRegistryRepository
+
+  """
+  List container grades for a repository
+  
+  Equivalent to GET /repositories/registry/{registry}/repository/{repository}/grades
+  """
+  repositoriesRegistryRepositoryGrades(
+    """Container registry"""
+    registry: String!
+
+    """Path of the repository"""
+    repository: String!
+  ): [RepositoriesRegistryRepositoryGradesListItem]
+
+  """
+  List images for a repository
+  
+  Equivalent to GET /repositories/registry/{registry}/repository/{repository}/images
+  """
+  repositoriesRegistryRepositoryImages(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+
+    """Container registry"""
+    registry: String!
+
+    """Path of the repository"""
+    repository: String!
+  ): RepositoriesRegistryRepositoryImages
+
+  """
+  DEPRECATED: The product data has been replaced by product listings for ISVs.
+  For RH products it will be replaced June 2020. Get the product for a repository
+  
+  Equivalent to GET /repositories/registry/{registry}/repository/{repository}/product
+  """
+  repositoriesRegistryRepositoryProduct(
+    """Container registry"""
+    registry: String!
+
+    """Path of the repository"""
+    repository: String!
+  ): RepositoriesRegistryRepositoryProduct
+
+  """
+  Get product listings associated with repository
+  
+  Equivalent to GET /repositories/registry/{registry}/repository/{repository}/product-listings
+  """
+  repositoriesRegistryRepositoryProductListings(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+
+    """Container registry"""
+    registry: String!
+
+    """Path of the repository"""
+    repository: String!
+  ): RepositoriesRegistryRepositoryProductListings
+
+  """
+  List images for a repository + tag
+  
+  Equivalent to GET /repositories/registry/{registry}/repository/{repository}/tag/{tag}
+  """
+  repositoriesRegistryRepositoryTag(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+
+    """Container registry"""
+    registry: String!
+
+    """Path of the repository"""
+    repository: String!
+
+    """Tag name"""
+    tag: String!
+  ): RepositoriesRegistryRepositoryTag
+
+  """
+  Get the vendor for a repository
+  
+  Equivalent to GET /repositories/registry/{registry}/repository/{repository}/vendor
+  """
+  repositoriesRegistryRepositoryVendor(
+    """Container registry"""
+    registry: String!
+
+    """Path of the repository"""
+    repository: String!
+  ): RepositoriesRegistryRepositoryVendor
+
+  """
+  Database availability endpoint
+  
+  Equivalent to GET /status/db
+  """
+  statusDb: StatusDb
+
+  """
+  Log forwarder availability endpoint
+  
+  Equivalent to GET /status/logs
+  """
+  statusLogs: StatusLogs
+
+  """
+  Get a tag history
+  
+  Equivalent to GET /tag-history/id/{identifier}
+  """
+  tagHistoryId(
+    """ID of the resource"""
+    identifier: String!
+  ): TagHistoryId
+
+  """
+  Get images for tag history
+  
+  Equivalent to GET /tag-history/id/{identifier}/images
+  """
+  tagHistoryIdImages(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """ID of the resource"""
+    identifier: String!
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): TagHistoryIdImages
+
+  """
+  Get a tag history by tag name
+  
+  Equivalent to GET /tag-history/registry/{registry}/repository/{repository}/tag/{tag}
+  """
+  tagHistoryRegistryRepositoryTag(
+    """Container registry"""
+    registry: String!
+
+    """Path of the repository"""
+    repository: String!
+
+    """Tag name"""
+    tag: String!
+  ): TagHistoryRegistryRepositoryTag
+
+  """
+  Get a vendor by Company ID
+  
+  Equivalent to GET /vendors/company-id/{company_id}
+  """
+  vendorsCompanyId(
+    """Company ID in RHC."""
+    companyId: Int!
+  ): VendorsCompanyId
+
+  """
+  Get a vendor by ID
+  
+  Equivalent to GET /vendors/id/{identifier}
+  """
+  vendorsId(
+    """ID of the resource"""
+    identifier: String!
+  ): VendorsId
+
+  """
+  Get a vendor by label
+  
+  Equivalent to GET /vendors/label/{label}
+  """
+  vendorsLabel(
+    """Label of the vendor"""
+    label: String!
+  ): VendorsLabel
+
+  """
+  Get the product listings for a vendor by label
+  
+  Equivalent to GET /vendors/label/{label}/product-listings
+  """
+  vendorsLabelProductListings(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Label of the vendor"""
+    label: String!
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): VendorsLabelProductListings
+
+  """
+  Get the repositories for a vendor label
+  
+  Equivalent to GET /vendors/label/{label}/repositories
+  """
+  vendorsLabelRepositories(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """Filter repositories based on image usage type."""
+    imageUsageType: String
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Label of the vendor"""
+    label: String!
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): VendorsLabelRepositories
+
+  """
+  A viewer that wraps operations for all available authentication mechanisms
+  """
+  viewerAnyAuth(jWT: JSON): ViewerAnyAuth
+}
+
+type QuickStartConfiguration {
+  instructions: String
+}
+
+input QuickStartConfigurationInput {
+  instructions: String
+}
+
+type Redhat {
+  """Red Hat Product ID."""
+  productId: Int
+
+  """Red Hat product name."""
+  productName: String
+
+  """Red Hat Product Version."""
+  productVersion: String
+
+  """Red Hat Product Version."""
+  productVersionId: Int
+}
+
+input RedhatInput {
+  """Red Hat Product ID."""
+  productId: Int
+
+  """Red Hat product name."""
+  productName: String
+
+  """Red Hat Product Version."""
+  productVersion: String
+
+  """Red Hat Product Version."""
+  productVersionId: Int
+}
+
+enum RegistryVendor {
+  QUAY_IO
+  DOCKER
+  OWN
+}
+
+enum ReleaseCategory {
+  GENERALLY_AVAILABLE
+  BETA
+  TECH_PREVIEW
+  DEPRECATED
+  MIXED
+}
+
+type ReplacedByRepository {
+  """URI to the replacing repository."""
+  href: String
+}
+
+type Repositories2ListItem {
+  registry: String!
+  repository: String!
+  tags: [Tags3ListItem]
+}
+
+type Repositories4 {
+  """URI to this product's repositories."""
+  href: String
+}
+
+type Repositories5 {
+  data: [Data6ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type Repositories6 {
+  """URI to this vendor's repositories."""
+  href: String
+}
+
+type Repository {
+  """The application categories (types). AUTHENTICATION OPTIONAL."""
+  applicationCategories: [String]
+
+  """
+  Contains unique list of all container architectures for the given repository.
+  """
+  architectures: [String]
+
+  """Denote which tags to be used for auto-rebuilding processes."""
+  autoRebuildTags: [String]
+
+  """Flag indicating whether the repository is still beta or not."""
+  beta: Boolean
+
+  """
+  What build categories does this fall into, such as standalone, s2i builder, etc.
+  """
+  buildCategories: [String]
+
+  """
+  Flag indicating whether the repository has opted-in to auto-release auto-built images.
+  """
+  canAutoReleaseCveRebuild: Boolean
+  cdnBaseUrl: String
+
+  """
+  DEPRECATED: use containerImage.content_sets instead. To provide customers
+  information which yum repos to enable to be able to update the container content.
+  """
+  contentSets: [String]
+
+  """
+  Capture and provide an inventory of tags corresponding to the content streams.
+  """
+  contentStreamTags: [String]
+
+  """Date the record was created. Value always generated on inset."""
+  creationDate: String
+
+  """Flag indicating whether the repository is still supported or not."""
+  deprecated: Boolean
+
+  """Description of the repository."""
+  description: String
+  displayData: DisplayData
+
+  """
+  Links to marketing and doc collateral including categorization (solution
+  brief, white paper, demo video, etc.) supposed to be displayed on the product
+  page (NOT documentation tab on image overview tab).
+  """
+  documentationLinks: [DocumentationLinksListItem]
+  eolDate: String
+
+  """Date until the freshness grades for this repository are unknown."""
+  freshnessGradesUnknownUntilDate: String
+  id: String
+
+  """Defines  whether a repository contains multiple image streams."""
+  includesMultipleContentStreams: Boolean
+
+  """Designates whether a repository is community-supported."""
+  isCommunitySupported: Boolean
+
+  """ID of the project in for ISV repositories."""
+  isvPid: String
+
+  """
+  Manually overriden label values.  When set, should be taken instead of label set on the image.
+  """
+  labelOverride: LabelOverride
+  lastUpdateDate: String
+  links: Links10
+
+  """Set of metrics about the repository."""
+  metrics: Metrics
+
+  """Namespace of the repository."""
+  namespace: String
+
+  """Repository is intended for non-production use only."""
+  nonProductionOnly: Boolean
+  objectType: String
+
+  """
+  Indicates if images in this repository are allowed to run super-privileged.
+  """
+  privilegedImagesAllowed: Boolean
+
+  """ID of the project in PRM.  Only for ISV repositories."""
+  prmProjectId: String
+
+  """
+  DEPRECATED: The product data has been replaced by product listings for ISVs.
+  For RH products it will be replaced June 2020. Reference to the product for
+  this repository by id.
+  """
+  productId: String
+  productListings: [String]
+
+  """Map repositories to specific product versions."""
+  productVersions: [String]
+  protectedForPull: Boolean
+
+  """
+  Does the repository require subscription or other access restrictions for search?.
+  """
+  protectedForSearch: Boolean
+
+  """
+  Indicate that the repository does not have any images in it or has been deleted.
+  """
+  published: Boolean
+
+  """Hostname of the registry where the repository can be accessed."""
+  registry: String
+
+  """
+  consumed by the Registry Proxy so that it can route users to the proper backend registry (e.g. Pulp or Quay).
+  """
+  registryTarget: String
+
+  """
+  The release categories of a repository like 'Tech Preview', 'Beta', 'Deprecated'.
+  """
+  releaseCategories: [String]
+
+  """If deprecated what is the new repo name we should point to instead?"""
+  replacedByRepositoryName: String
+
+  """Combination of image repository and namespace."""
+  repository: String
+
+  """
+  Flag indicating whether (false) the repository is published on the legacy
+  registry (registry.access.redhat.com), or (true) can only be published to
+  registry.redhat.io.
+  """
+  requiresTerms: Boolean
+
+  """Describes what the image can be run on."""
+  runsOn: RunsOn
+
+  """
+  Flag indicating whether images associated with this repo are included in
+  workflows where non-binary container images are published alongside their
+  binary counterparts.
+  """
+  sourceContainerImageEnabled: Boolean
+
+  """The support levels of a repository."""
+  supportLevels: [String]
+
+  """Flag indicating whether the repository is in tech preview or not."""
+  techPreview: Boolean
+
+  """Total size of all images in bytes."""
+  totalSizeBytes: Int
+
+  """Total size of all uncompressed images in bytes."""
+  totalUncompressedSizeBytes: Int
+
+  """
+  When populated this field will override the content on the 'get this image' tab in red hat container catalog.
+  """
+  uiGetThisImageOverride: String
+
+  """Label of the vendor that owns this repository."""
+  vendorLabel: String
+}
+
+type RepositoriesIdProductListings {
+  data: [Data4ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type RepositoriesListItem {
+  """Store information about image comparison."""
+  comparison: Comparison
+
+  """
+  The _id of the redHatContainerAdvisory that contains the image advisory.
+  """
+  imageAdvisoryId: String
+  links: Links2
+
+  """
+  When the image was pushed to this repository. For RH images this is picked
+  from first found of advisory ship_date, brew completion_date, and finally
+  repositories publish_date. For ISV images this TBD but is probably going to be
+  only sourced from publish_date but could come from parsed_data.created.
+  """
+  pushDate: String
+
+  """Hostname of the registry where the repository can be accessed."""
+  registry: String
+
+  """Repository name."""
+  repository: String
+
+  """Image signing info."""
+  signatures: [SignaturesListItem]
+
+  """List of container tags assigned to this layer."""
+  tags: [Tags2ListItem]
+}
+
+type RepositoriesRegistryRepository {
+  """The application categories (types). AUTHENTICATION OPTIONAL."""
+  applicationCategories: [String]
+
+  """
+  Contains unique list of all container architectures for the given repository.
+  """
+  architectures: [String]
+
+  """Denote which tags to be used for auto-rebuilding processes."""
+  autoRebuildTags: [String]
+
+  """Flag indicating whether the repository is still beta or not."""
+  beta: Boolean
+
+  """
+  What build categories does this fall into, such as standalone, s2i builder, etc.
+  """
+  buildCategories: [String]
+
+  """
+  Flag indicating whether the repository has opted-in to auto-release auto-built images.
+  """
+  canAutoReleaseCveRebuild: Boolean
+  cdnBaseUrl: String
+
+  """
+  DEPRECATED: use containerImage.content_sets instead. To provide customers
+  information which yum repos to enable to be able to update the container content.
+  """
+  contentSets: [String]
+
+  """
+  Capture and provide an inventory of tags corresponding to the content streams.
+  """
+  contentStreamTags: [String]
+
+  """Date the record was created. Value always generated on inset."""
+  creationDate: String
+
+  """Flag indicating whether the repository is still supported or not."""
+  deprecated: Boolean
+
+  """Description of the repository."""
+  description: String
+  displayData: DisplayData
+
+  """
+  Links to marketing and doc collateral including categorization (solution
+  brief, white paper, demo video, etc.) supposed to be displayed on the product
+  page (NOT documentation tab on image overview tab).
+  """
+  documentationLinks: [DocumentationLinksListItem]
+  eolDate: String
+
+  """Date until the freshness grades for this repository are unknown."""
+  freshnessGradesUnknownUntilDate: String
+  id: String
+
+  """Defines  whether a repository contains multiple image streams."""
+  includesMultipleContentStreams: Boolean
+
+  """Designates whether a repository is community-supported."""
+  isCommunitySupported: Boolean
+
+  """ID of the project in for ISV repositories."""
+  isvPid: String
+
+  """
+  Manually overriden label values.  When set, should be taken instead of label set on the image.
+  """
+  labelOverride: LabelOverride
+  lastUpdateDate: String
+  links: Links10
+
+  """Set of metrics about the repository."""
+  metrics: Metrics
+
+  """Namespace of the repository."""
+  namespace: String
+
+  """Repository is intended for non-production use only."""
+  nonProductionOnly: Boolean
+  objectType: String
+
+  """
+  Indicates if images in this repository are allowed to run super-privileged.
+  """
+  privilegedImagesAllowed: Boolean
+
+  """ID of the project in PRM.  Only for ISV repositories."""
+  prmProjectId: String
+
+  """
+  DEPRECATED: The product data has been replaced by product listings for ISVs.
+  For RH products it will be replaced June 2020. Reference to the product for
+  this repository by id.
+  """
+  productId: String
+  productListings: [String]
+
+  """Map repositories to specific product versions."""
+  productVersions: [String]
+  protectedForPull: Boolean
+
+  """
+  Does the repository require subscription or other access restrictions for search?.
+  """
+  protectedForSearch: Boolean
+
+  """
+  Indicate that the repository does not have any images in it or has been deleted.
+  """
+  published: Boolean
+
+  """Hostname of the registry where the repository can be accessed."""
+  registry: String
+
+  """
+  consumed by the Registry Proxy so that it can route users to the proper backend registry (e.g. Pulp or Quay).
+  """
+  registryTarget: String
+
+  """
+  The release categories of a repository like 'Tech Preview', 'Beta', 'Deprecated'.
+  """
+  releaseCategories: [String]
+
+  """If deprecated what is the new repo name we should point to instead?"""
+  replacedByRepositoryName: String
+
+  """Combination of image repository and namespace."""
+  repository: String
+
+  """
+  Flag indicating whether (false) the repository is published on the legacy
+  registry (registry.access.redhat.com), or (true) can only be published to
+  registry.redhat.io.
+  """
+  requiresTerms: Boolean
+
+  """Describes what the image can be run on."""
+  runsOn: RunsOn
+
+  """
+  Flag indicating whether images associated with this repo are included in
+  workflows where non-binary container images are published alongside their
+  binary counterparts.
+  """
+  sourceContainerImageEnabled: Boolean
+
+  """The support levels of a repository."""
+  supportLevels: [String]
+
+  """Flag indicating whether the repository is in tech preview or not."""
+  techPreview: Boolean
+
+  """Total size of all images in bytes."""
+  totalSizeBytes: Int
+
+  """Total size of all uncompressed images in bytes."""
+  totalUncompressedSizeBytes: Int
+
+  """
+  When populated this field will override the content on the 'get this image' tab in red hat container catalog.
+  """
+  uiGetThisImageOverride: String
+
+  """Label of the vendor that owns this repository."""
+  vendorLabel: String
+}
+
+type RepositoriesRegistryRepositoryAnalyticsPageviews {
+  byDate: [ByDateListItem]
+
+  """Total number of page views."""
+  totalPageviews: Int
+}
+
+type RepositoriesRegistryRepositoryAnalyticsPullCounts {
+  byCustomers: [ByCustomersListItem]
+  byTags: [ByTagsListItem]
+
+  """Total number of distinct countries customers are from."""
+  totalCountries: Int
+
+  """Total number of distinct customers."""
+  totalCustomers: Int
+
+  """Total number of image pulls performed."""
+  totalPulls: Int
+}
+
+type RepositoriesRegistryRepositoryGradesListItem {
+  """Image architecture."""
+  architecture: String!
+
+  """
+  Current image security grade based on current date and grading schedule.
+  """
+  currentGrade: CurrentGrade!
+
+  """
+  the grade based on applicable updates and time provided by PST CVE engine.
+  """
+  freshnessGrades: [FreshnessGradesListItem]!
+
+  """Unique identifier for image."""
+  imageId: String!
+  links: Links12
+
+  """A date when current grade drops."""
+  nextDropDate: String
+
+  """Name of floating tag associated with the image."""
+  tag: String!
+}
+
+type RepositoriesRegistryRepositoryImages {
+  data: [Data3ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type RepositoriesRegistryRepositoryProduct {
+  """The application categories (types). AUTHENTICATION OPTIONAL."""
+  applicationCategories: [String]
+
+  """
+  What build categories does this fall into, such as standalone, s2i builder, etc.
+  """
+  buildCategories: [String]
+
+  """Date the record was created. Value always generated on inset."""
+  creationDate: String
+
+  """
+  Links to marketing and doc collateral including categorization (solution
+  brief, white paper, demo video, etc.) supposed to be displayed on the product
+  page (NOT documentation tab on image overview tab).
+  """
+  documentationLinks: [DocumentationLinksListItem]
+
+  """Unique identifier for the product."""
+  id: String
+
+  """the industry / vertical for the product."""
+  industries: [String]
+
+  """All relevant keywords resp. search terms for a particular product."""
+  keywords: [String]
+
+  """
+  All hidden keywords resp. search terms for a particular product, but not visible to the user.
+  """
+  keywordsHidden: [String]
+
+  """Date the record was last updated. Value always generated on update."""
+  lastUpdateDate: String
+  links: Links11
+
+  """Product URL similar to vendor logo."""
+  logoUrl: String
+
+  """a multi-sentence description of the product."""
+  longDescription: String
+
+  """markdown for the long description of the product."""
+  longDescriptionMarkdown: String
+
+  """the vendor provided name of the product."""
+  name: String!
+  objectType: String
+
+  """Indicate that the product has been published."""
+  published: Boolean!
+
+  """URLs of the product specific lifecycle policy document."""
+  releasePolicyUrls: [String]
+
+  """A one sentence desc as provided in connect."""
+  shortDescription: String
+
+  """URLs of the product specific support policy document."""
+  supportPolicyUrls: [String]
+
+  """_id of the corresponding containerTeam."""
+  teamId: String
+
+  """a link to vendor product URL."""
+  url: String
+
+  """Label of the vendor that owns this product."""
+  vendorLabel: String!
+}
+
+type RepositoriesRegistryRepositoryProductListings {
+  data: [Data4ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type RepositoriesRegistryRepositoryProjectsCertification {
+  """Certification Date."""
+  certificationDate: String
+
+  """Certification Status."""
+  certificationStatus: CertificationStatus
+
+  """Certification User."""
+  certificationUser: Int
+  container: Container
+
+  """Date the record was created.\ Value always generated on inset."""
+  creationDate: String
+  drupal: Drupal
+
+  """Unique identifier for the certification project."""
+  id: String
+
+  """Date the record was last updated.\ Value always generated on update."""
+  lastUpdateDate: String
+  links: Links8
+
+  """The owner provided name of the certification project."""
+  name: String
+
+  """Operator Distribution."""
+  operatorDistribution: String
+  productListings: [String]
+
+  """Status of the certification project."""
+  projectStatus: ProjectStatus
+
+  """Who published the certification project."""
+  publishedBy: PublishedBy
+  redhat: Redhat
+  selfCertification: SelfCertification
+}
+
+type RepositoriesRegistryRepositoryTag {
+  data: [Data3ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type RepositoriesRegistryRepositoryVendor {
+  """URL to the vendor's main website."""
+  companyUrl: String
+
+  """
+  General contact information for the vendor, to be displayed on the vendor page on RHCC.
+  """
+  contact: Contact
+
+  """Date the record was created.  Value always generated on inset."""
+  creationDate: String
+  description: String
+
+  """Company node ID from Red Hat Connect."""
+  drupalCompanyId: Int
+  id: String
+
+  """The industry / vertical the vendor belongs to."""
+  industries: [String]
+  label: String
+  lastUpdateDate: String
+  links: Links13
+  logoUrl: String
+  name: String
+  objectType: String
+
+  """Indicate that the vendor has been published."""
+  published: Boolean!
+  registryUrls: [String]
+
+  """RSS feed for vendor."""
+  rssFeedUrl: String
+  socialMediaLinks: [SocialMediaLinksListItem]
+}
+
+type RepositoryHREF {
+  """URI to the repository definition."""
+  href: String
+}
+
+type ReposListItem {
+  baseurl: String
+  expire: String
+  filename: String
+  id: String
+  name: String
+  pkgs: String
+  size: String
+  updated: String
+}
+
+type RpmManifest {
+  """Content manifest of this image. RPM content included in the image."""
+  href: String
+}
+
+"""List of rpms grouped by category (new, remove, upgrade, downgrade)."""
+type Rpms {
+  """List of NVRA which were downgraded in this image."""
+  downgrade: [String]
+
+  """List of NVRA which were added to this image."""
+  new: [String]
+
+  """List of NVRA which were removed in this image."""
+  remove: [String]
+
+  """List of NVRA which were upgraded in this image."""
+  upgrade: [String]
+}
+
+type Rpms2ListItem {
+  """RPM architecture."""
+  architecture: String
+
+  """GPG key used to sign the RPM."""
+  gpg: String
+
+  """RPM name."""
+  name: String
+
+  """RPM name, version, release, and architecture."""
+  nvra: String
+
+  """RPM release."""
+  release: String
+
+  """Source RPM name."""
+  srpmName: String
+
+  """Source RPM NEVRA (name, epoch, version, release, architecture)."""
+  srpmNevra: String
+
+  """RPM summary."""
+  summary: String
+
+  """RPM version."""
+  version: String
+}
+
+"""Describes what the image can be run on."""
+type RunsOn {
+  """Can the image run on openshift_online."""
+  openshiftOnline: Boolean
+}
+
+type SearchAliasesListItem {
+  key: String
+  value: String
+}
+
+input SearchAliasesListItemInput {
+  key: String
+  value: String
+}
+
+type SelfCertification {
+  """Application Profiler."""
+  appProfiler: Boolean
+
+  """Application Runs on App Type."""
+  appRunsOnAppType: Boolean
+
+  """
+  Does the Self Certification Evidence URL require
+  a customer login.
+  
+  """
+  authLogin: Boolean
+
+  """Self Certification Evidence URL."""
+  certificationUrl: String
+
+  """Can Commercially Support on App Type."""
+  commSupportOnAppType: Boolean
+
+  """Self Certification Requested."""
+  requested: Boolean
+
+  """TsaNET Member."""
+  tsanetMember: Boolean
+}
+
+input SelfCertificationInput {
+  """Application Profiler."""
+  appProfiler: Boolean
+
+  """Application Runs on App Type."""
+  appRunsOnAppType: Boolean
+
+  """
+  Does the Self Certification Evidence URL require
+  a customer login.
+  
+  """
+  authLogin: Boolean
+
+  """Self Certification Evidence URL."""
+  certificationUrl: String
+
+  """Can Commercially Support on App Type."""
+  commSupportOnAppType: Boolean
+
+  """Self Certification Requested."""
+  requested: Boolean
+
+  """TsaNET Member."""
+  tsanetMember: Boolean
+}
+
+type SignaturesListItem {
+  """The long 16-byte gpg key id."""
+  keyLongId: String
+
+  """List of image tags that are signed with the given key."""
+  tags: [String]
+}
+
+type SocialMediaLinksListItem {
+  """The name of the social media provider."""
+  name: String!
+
+  """The URL to the social media site for the vendor."""
+  url: String!
+}
+
+"""Splunk forwarder status information"""
+type Splunk {
+  """Forwarder status"""
+  status: Boolean
+}
+
+type StatusDb {
+  """Object with all databases statuses"""
+  databases: Databases
+}
+
+type StatusLogs {
+  """Object with all log forwarder statuses"""
+  forwarders: Forwarders
+}
+
+"""This field is required when the product listing is published."""
+type Support {
+  description: String
+  emailAddress: String
+  phoneNumber: String
+  url: String
+}
+
+"""This field is required when the product listing is published."""
+input SupportInput {
+  description: String
+  emailAddress: String
+  phoneNumber: String
+  url: String
+}
+
+enum SupportPlatformsListItem {
+  OPENSHIFT_ONLINE
+  OPENSHIFT_CONTAINER_PLATFORM
+  OPENSHIFT_CONTAINER_DEDICATED
+  NOT_SUPPORTED
+}
+
+type TagHistory {
+  """Reference to the tag history."""
+  href: String
+}
+
+type TagHistoryId {
+  """Date the record was created. Value always generated on insert."""
+  creationDate: String
+
+  """Array with the tag history information."""
+  history: [HistoryListItem]
+
+  """Unique identifier for the tag history."""
+  id: String
+
+  """Date the record was last updated. Value always generated on update."""
+  lastUpdateDate: String
+  links: Links14
+  objectType: String!
+
+  """Hostname of the registry where the repository can be accessed"""
+  registry: String!
+
+  """Repository name."""
+  repository: String!
+
+  """The image tag name."""
+  tag: String!
+
+  """The tag type i.e. for floating or persistent."""
+  tagType: String!
+}
+
+type TagHistoryIdImages {
+  data: [Data3ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type TagHistoryRegistryRepositoryTag {
+  """Date the record was created. Value always generated on insert."""
+  creationDate: String
+
+  """Array with the tag history information."""
+  history: [HistoryListItem]
+
+  """Unique identifier for the tag history."""
+  id: String
+
+  """Date the record was last updated. Value always generated on update."""
+  lastUpdateDate: String
+  links: Links14
+  objectType: String!
+
+  """Hostname of the registry where the repository can be accessed"""
+  registry: String!
+
+  """Repository name."""
+  repository: String!
+
+  """The image tag name."""
+  tag: String!
+
+  """The tag type i.e. for floating or persistent."""
+  tagType: String!
+}
+
+type Tags2ListItem {
+  addedDate: String
+  links: Links3
+
+  """Available when manifest_schema2_digest is not. All legacy images."""
+  manifestSchema1Digest: String
+
+  """The name of the tag."""
+  name: String
+
+  """
+  Date this tag was removed from the image in this repo. If the tag is added back, add a new entry in 'tags' array.
+  """
+  removedDate: String
+}
+
+type Tags3ListItem {
+  name: String!
+}
+
+enum Type {
+  RHEA
+  RHBA
+  RHSA
+}
+
+enum Type2 {
+  MARKETING_CONTACT
+  TECHNICAL_CONTACT
+}
+
+enum Type3 {
+  VIDEO
+  ARTICLE
+  DOCUMENTATION
+  WEBSITE
+}
+
+enum Type4 {
+  OPERATOR_CONTROLLED
+  CONTAINER_STACK
+  TRADITIONAL_APPLICATION
+  OPENSTACK_INFRASTRUCTURE
+}
+
+enum Type5 {
+  CONTAINER
+  OPERATOR
+  OPERATOR_REGISTRY_BUNDLE
+  SCRATCH
+}
+
+enum Type6 {
+  CUSTOMER_CASE_STUDY
+  DOCUMENTATION
+  WHITE_PAPER
+  BLOG
+  DEMO_VIDEO
+  PRODUCT_DATASHEET
+  RECORDED_WEBINAR
+  SOLUTION_BRIEF
+}
+
+type UncompressedLayerSizesListItem {
+  """The SHA256 layer ID."""
+  layerId: String
+
+  """The uncompressed layer size in bytes."""
+  sizeBytes: Int
+}
+
+"""Database status information"""
+type Vdb {
+  """Database response time in seconds"""
+  responseTime: Float
+
+  """Database status"""
+  status: Boolean
+}
+
+type Vendor {
+  """URI to the vendor of the product listing."""
+  href: String
+}
+
+type Vendor2 {
+  """URI to this project's owner."""
+  href: String
+}
+
+input Vendor2Input {
+  """URI to this project's owner."""
+  href: String
+}
+
+type Vendor3 {
+  """URI to this repository's vendor."""
+  href: String
+}
+
+type Vendor4 {
+  """URI to this product's vendor."""
+  href: String
+}
+
+input VendorInput {
+  """URI to the vendor of the product listing."""
+  href: String
+}
+
+type VendorsCompanyId {
+  """URL to the vendor's main website."""
+  companyUrl: String
+
+  """
+  General contact information for the vendor, to be displayed on the vendor page on RHCC.
+  """
+  contact: Contact
+
+  """Date the record was created.  Value always generated on inset."""
+  creationDate: String
+  description: String
+
+  """Company node ID from Red Hat Connect."""
+  drupalCompanyId: Int
+  id: String
+
+  """The industry / vertical the vendor belongs to."""
+  industries: [String]
+  label: String
+  lastUpdateDate: String
+  links: Links13
+  logoUrl: String
+  name: String
+  objectType: String
+
+  """Indicate that the vendor has been published."""
+  published: Boolean!
+  registryUrls: [String]
+
+  """RSS feed for vendor."""
+  rssFeedUrl: String
+  socialMediaLinks: [SocialMediaLinksListItem]
+}
+
+type VendorsCompanyIdProductListings {
+  data: [Data4ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type VendorsCompanyIdProjectsCertification {
+  data: [Data5ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type VendorsId {
+  """URL to the vendor's main website."""
+  companyUrl: String
+
+  """
+  General contact information for the vendor, to be displayed on the vendor page on RHCC.
+  """
+  contact: Contact
+
+  """Date the record was created.  Value always generated on inset."""
+  creationDate: String
+  description: String
+
+  """Company node ID from Red Hat Connect."""
+  drupalCompanyId: Int
+  id: String
+
+  """The industry / vertical the vendor belongs to."""
+  industries: [String]
+  label: String
+  lastUpdateDate: String
+  links: Links13
+  logoUrl: String
+  name: String
+  objectType: String
+
+  """Indicate that the vendor has been published."""
+  published: Boolean!
+  registryUrls: [String]
+
+  """RSS feed for vendor."""
+  rssFeedUrl: String
+  socialMediaLinks: [SocialMediaLinksListItem]
+}
+
+type VendorsLabel {
+  """URL to the vendor's main website."""
+  companyUrl: String
+
+  """
+  General contact information for the vendor, to be displayed on the vendor page on RHCC.
+  """
+  contact: Contact
+
+  """Date the record was created.  Value always generated on inset."""
+  creationDate: String
+  description: String
+
+  """Company node ID from Red Hat Connect."""
+  drupalCompanyId: Int
+  id: String
+
+  """The industry / vertical the vendor belongs to."""
+  industries: [String]
+  label: String
+  lastUpdateDate: String
+  links: Links13
+  logoUrl: String
+  name: String
+  objectType: String
+
+  """Indicate that the vendor has been published."""
+  published: Boolean!
+  registryUrls: [String]
+
+  """RSS feed for vendor."""
+  rssFeedUrl: String
+  socialMediaLinks: [SocialMediaLinksListItem]
+}
+
+type VendorsLabelProductListings {
+  data: [Data4ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type VendorsLabelRepositories {
+  data: [Data6ListItem]
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+"""Warning: Not every request will work with this viewer type"""
+type ViewerAnyAuth {
+  """
+  Get all product listings
+  
+  Equivalent to GET /product-listings
+  """
+  productListings(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): ProductListings
+
+  """
+  Get a product listing
+  
+  Equivalent to GET /product-listings/id/{identifier}
+  """
+  productListingsId(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """ID of the resource"""
+    identifier: String!
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+  ): ProductListingsId
+
+  """
+  Get certification projects associated with product listing
+  
+  Equivalent to GET /product-listings/id/{identifier}/projects/certification
+  """
+  productListingsIdProjectsCertification(
+    """Type of container."""
+    containerType: ContainerType
+
+    """Drupal company zone in RHC."""
+    drupalZone: String
+
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """ID of the resource"""
+    identifier: String!
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): ProductListingsIdProjectsCertification
+
+  """
+  Get certification project using its ID
+  
+  Equivalent to GET /projects/certification/id/{identifier}
+  """
+  projectsCertificationId(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """ID of the resource"""
+    identifier: String!
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+  ): ProjectsCertificationId
+
+  """
+  Get product-listings for certification project using its ID
+  
+  Equivalent to GET /projects/certification/id/{identifier}/product-listings
+  """
+  projectsCertificationIdProductListings(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """ID of the resource"""
+    identifier: String!
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): ProjectsCertificationIdProductListings
+
+  """
+  This only supports scan logs for Operator registry bundles.
+  
+  Equivalent to GET /projects/certification/id/{identifier}/scans/{scan_uuid}/logs/{test_case}
+  """
+  projectsCertificationIdScanLogs(
+    """ID of the resource"""
+    identifier: String!
+
+    """Unique identifier of an ISV certification scan"""
+    scanUuid: String!
+
+    """ISV certification test case name"""
+    testCase: String!
+  ): String
+
+  """
+  Get certification project using Red Hat Connect project id
+  
+  Equivalent to GET /projects/certification/pid/{pid}
+  """
+  projectsCertificationPid(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Red Hat Partner Connect project id"""
+    pid: String!
+  ): ProjectsCertificationPid
+
+  """
+  Get the analytics pull count data for a repository
+  
+  Equivalent to GET /repositories/registry/{registry}/repository/{repository}/analytics/pageviews
+  """
+  repositoriesRegistryRepositoryAnalyticsPageviews(
+    """Time delta (1-366 days) to pull analytics data for"""
+    delta: Int
+
+    """Container registry"""
+    registry: String!
+
+    """Path of the repository"""
+    repository: String!
+  ): RepositoriesRegistryRepositoryAnalyticsPageviews
+
+  """
+  Get the analytics pull count data for a repository
+  
+  Equivalent to GET /repositories/registry/{registry}/repository/{repository}/analytics/pull-counts
+  """
+  repositoriesRegistryRepositoryAnalyticsPullCounts(
+    """Time delta (1-366 days) to pull analytics data for"""
+    delta: Int
+
+    """Container registry"""
+    registry: String!
+
+    """Path of the repository"""
+    repository: String!
+  ): RepositoriesRegistryRepositoryAnalyticsPullCounts
+
+  """
+  Get the certification project for a repository
+  
+  Equivalent to GET /repositories/registry/{registry}/repository/{repository}/projects/certification
+  """
+  repositoriesRegistryRepositoryProjectsCertification(
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Container registry"""
+    registry: String!
+
+    """Path of the repository"""
+    repository: String!
+  ): RepositoriesRegistryRepositoryProjectsCertification
+
+  """
+  Get the product listings for a vendor by Company ID
+  
+  Equivalent to GET /vendors/company-id/{company_id}/product-listings
+  """
+  vendorsCompanyIdProductListings(
+    """Company ID in RHC."""
+    companyId: Int!
+
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): VendorsCompanyIdProductListings
+
+  """
+  Get certification projects of the vendor
+  
+  Equivalent to GET /vendors/company-id/{company_id}/projects/certification
+  """
+  vendorsCompanyIdProjectsCertification(
+    """Company ID in RHC."""
+    companyId: Int!
+
+    """Type of container."""
+    containerType: ContainerType
+
+    """Drupal company zone in RHC."""
+    drupalZone: String
+
+    """
+    Comma separated list of fields to exclude in the response. Use dot notation to define nested fields.
+    """
+    exclude: [String]
+
+    """
+    Comma separated list of fields to include in the response. Use dot notation to define nested fields.
+    """
+    include: [String]
+
+    """Current page of a list."""
+    page: Int
+
+    """Size of a returned list page."""
+    pageSize: Int
+  ): VendorsCompanyIdProjectsCertification
+}
+
+type Vulnerabilities {
+  """
+  URI to CVEs for this image with related advisory. This is the vulnerabilities
+  that apply to this image, not those that are fixed by the image.
+  """
+  href: String
+}
+
+
+`
